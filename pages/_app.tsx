@@ -3,12 +3,15 @@ import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { store } from "store";
 import { useInitialTheme } from "hooks/useInitialTheme";
+import { EthyleneProvider } from "ethylene/EthyleneProvider";
 
 function StakeDao(props: AppProps) {
   return (
-    <Provider store={store}>
-      <Main {...props} />
-    </Provider>
+    <EthyleneProvider>
+      <Provider store={store}>
+        <Main {...props} />
+      </Provider>
+    </EthyleneProvider>
   );
 }
 
