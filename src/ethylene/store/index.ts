@@ -1,5 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { createContext } from "react";
+import {
+  createDispatchHook,
+  createSelectorHook,
+  TypedUseSelectorHook,
+  useDispatch,
+  useSelector,
+} from "react-redux";
 import accountReducer from "./reducers/accountReducer";
 import walletConnectionSlice from "./reducers/walletConnectionReducer";
 
@@ -20,3 +27,9 @@ export type RootState = ReturnType<typeof store.getState>;
 type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+export const ethyleneStoreConext = createContext(null);
+export const useStateDispatch = createDispatchHook(ethyleneStoreConext as any);
+export const useStateSelector = createSelectorHook(ethyleneStoreConext as any);
+export const useTypedEthleneSelector: TypedUseSelectorHook<RootState> =
+  useStateSelector;

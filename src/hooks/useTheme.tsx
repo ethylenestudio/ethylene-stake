@@ -1,20 +1,20 @@
 import { useDispatch } from "react-redux";
-import { useTypedSelector } from "store";
+import { useTypedStateSelector } from "store";
 import { setTheme } from "store/slicers/theme";
 
 export const useTheme = () => {
-  const { theme } = useTypedSelector((state) => state.theme);
+  const { theme } = useTypedStateSelector((state: any) => state.theme);
   const dispatch = useDispatch();
 
   const toggleTheme = () => {
-    if (Array.from(document.body.classList).includes("dark")) {
-      document.body.classList.remove("dark");
-      document.body.classList.add("light");
+    if (Array.from(document.documentElement.classList).includes("dark")) {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
       dispatch(setTheme("light"));
       localStorage.setItem("StakeDaoWebsiteTheme", "light");
     } else {
-      document.body.classList.remove("light");
-      document.body.classList.add("dark");
+      document.documentElement.classList.remove("light");
+      document.documentElement.classList.add("dark");
       dispatch(setTheme("dark"));
       localStorage.setItem("StakeDaoWebsiteTheme", "dark");
     }
