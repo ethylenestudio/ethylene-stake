@@ -15,9 +15,11 @@ export const AVAX_MAINNET: EthyleneNetwork = {
 };
 
 export const ETHEREUM_MAINNET: EthyleneNetwork = {
-  chainId: "0x01",
+  chainId: "0x1",
   name: "Ethereum",
-  rpcUrls: ["https://api.mycryptoapi.com/eth"],
+  rpcUrls: [
+    "https://eth-mainnet.g.alchemy.com/v2/JZWiNWabjpScd5RigSOZZwGANErZecOW",
+  ],
   nativeCurrency: { name: "Ether", decimals: 18, symbol: "ETH" },
 };
 

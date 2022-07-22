@@ -1,13 +1,14 @@
 import React from "react";
 import { Button, Container, Icon } from "ui";
 import { ButtonColor } from "ui/Button/Button.react";
-import { AiOutlineWallet } from "react-icons/ai";
-import { useAccount, useConnection } from "ethylene/hooks";
+import { AiFillExclamationCircle, AiOutlineWallet } from "react-icons/ai";
+import { useAccount, useConnection, useRightNetwork } from "ethylene/hooks";
 import { BsSunFill, BsMoonFill } from "react-icons/bs";
 import { useTheme } from "hooks";
 import { formatAddress } from "utils/formatAddress";
 import BlackLogo from "assets/logo/black.png";
 import WhiteLogo from "assets/logo/white.png";
+import { ETHEREUM_MAINNET_MOCK } from "const/networks";
 
 const Navbar = (): React.ReactElement => {
   const { theme } = useTheme();
@@ -32,11 +33,28 @@ const Navbar = (): React.ReactElement => {
 const Buttons = () => {
   const { connect } = useConnection();
   const { theme, toggleTheme } = useTheme();
-  const { address } = useAccount();
+  const { address, auth } = useAccount();
+  const { isRightNetwork, switchTo } = useRightNetwork(ETHEREUM_MAINNET_MOCK);
 
   return (
     <div className="flex justify-end">
+      {!isRightNetwork && auth && (
+        <Button
+          leftEl={
+            <Icon>
+              <AiFillExclamationCircle />
+            </Icon>
+          }
+          textClassName="text-sm"
+          className="mr-2"
+          onClick={() => switchTo()}
+          color={ButtonColor.black}
+        >
+          Switch to Ethereum
+        </Button>
+      )}
       <Button
+        textClassName="text-sm"
         onClick={connect}
         leftEl={
           <Icon>
@@ -47,7 +65,12 @@ const Buttons = () => {
       >
         {address ? formatAddress(address) : "Connect"}
       </Button>
-      <Button className="ml-2" onClick={toggleTheme} color={ButtonColor.black}>
+      <Button
+        textClassName="text-sm"
+        className="ml-2"
+        onClick={toggleTheme}
+        color={ButtonColor.black}
+      >
         <Icon>{theme === "dark" ? <BsMoonFill /> : <BsSunFill />}</Icon>
       </Button>
     </div>

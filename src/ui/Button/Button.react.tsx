@@ -17,6 +17,7 @@ interface Props extends Omit<ComponentPropsWithoutRef<"button">, "color"> {
   color: ButtonColor;
   leftEl?: ReactNode;
   rightEl?: ReactNode;
+  textClassName?: string;
 }
 
 const Button = ({
@@ -25,6 +26,7 @@ const Button = ({
   color,
   leftEl,
   rightEl,
+  textClassName,
   ...props
 }: Props): ReactElement => {
   const colorClassNames = useMemo((): string[] => {
@@ -44,7 +46,7 @@ const Button = ({
       {...props}
     >
       {leftEl && <span className="mr-2 text-inherit">{leftEl}</span>}
-      <span className="text-inherit text-sm">{children}</span>
+      <span className={clsnm("text-inherit", textClassName)}>{children}</span>
       {rightEl && <span className="ml-2 text-inherit">{rightEl}</span>}
     </button>
   );
@@ -63,7 +65,7 @@ const getColorClassName = (color: ButtonColor): ButtonClassNames => {
   let _color = "bg-white";
   let _textColor = "text-neutral-900";
   let _hoverColor = "hover:bg-neutral-0";
-  let _activeColor = "hover:bg-neutral-100";
+  let _activeColor = "active:bg-neutral-100";
   if (color === ButtonColor.black) {
     _color = "bg-neutral-800";
     _textColor = "text-white";

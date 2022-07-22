@@ -5,6 +5,7 @@ import { stateStoreContext, store } from "store";
 import { useInitialTheme } from "hooks/useInitialTheme";
 import { EthyleneProvider } from "ethylene/utils";
 import { ethyleneStoreConext } from "ethylene/store";
+import { useOnAccountsChange, useOnNetworkChange } from "ethylene/hooks";
 
 function StakeDao(props: AppProps) {
   return (
@@ -18,6 +19,12 @@ function StakeDao(props: AppProps) {
 
 function Main({ Component, pageProps }: AppProps) {
   useInitialTheme();
+
+  useOnNetworkChange(() => window.location.reload());
+  useOnAccountsChange(() => window.location.reload(), {
+    interval: 1000,
+  });
+
   return <Component {...pageProps} />;
 }
 

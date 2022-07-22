@@ -9,7 +9,7 @@ const Home: NextPage = () => {
       <Navbar />
       <Layout>
         <Container className="pt-10 flex w-full items-start flex-1 flex-col md:flex-row justify-start md:justify-between">
-          <div className="flex sm:w-full md:w-7/12 flex-col">
+          <div className="flex sm:w-full md:w-7/12 flex-col mb-12 md:mb-0">
             <h2 className="text-2xl mb-4">My rewards</h2>
             <span>You have no reward</span>
           </div>
