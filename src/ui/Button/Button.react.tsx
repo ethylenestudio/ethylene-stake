@@ -37,14 +37,14 @@ const Button = ({
   return (
     <button
       className={clsnm(
-        "px-4 py-2 radius rounded-md flex items-center",
+        "px-3 py-1.5 radius rounded-md flex items-center",
         ...colorClassNames,
         className
       )}
       {...props}
     >
       {leftEl && <span className="mr-2 text-inherit">{leftEl}</span>}
-      <span className="text-inherit">{children}</span>
+      <span className="text-inherit text-sm">{children}</span>
       {rightEl && <span className="ml-2 text-inherit">{rightEl}</span>}
     </button>
   );
