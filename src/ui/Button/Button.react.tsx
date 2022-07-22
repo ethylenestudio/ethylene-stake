@@ -65,15 +65,15 @@ const getColorClassName = (color: ButtonColor): ButtonClassNames => {
   let _hoverColor = "hover:bg-neutral-0";
   let _activeColor = "hover:bg-neutral-100";
   if (color === ButtonColor.black) {
-    _color = "bg-neutral-900";
+    _color = "bg-neutral-800";
     _textColor = "text-white";
-    _hoverColor = "hover:bg-neutral-800";
-    _activeColor = "active:bg-neutral-700";
+    _hoverColor = "hover:bg-neutral-700";
+    _activeColor = "active:bg-neutral-600";
   } else if (color === ButtonColor.purple) {
-    _color = "bg-purple-600";
+    _color = "bg-indigo-500";
     _textColor = "text-white";
-    _hoverColor = "hover:bg-purple-700";
-    _activeColor = "active:bg-purple-800";
+    _hoverColor = "hover:bg-indigo-600";
+    _activeColor = "active:bg-indigo-700";
   }
 
   return { _color, _textColor, _hoverColor, _activeColor };

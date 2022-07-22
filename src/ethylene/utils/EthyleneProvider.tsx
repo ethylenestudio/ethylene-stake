@@ -9,5 +9,9 @@ export const EthyleneProvider = ({
   children: ReactNode;
   context: any;
 }) => {
-  return <Provider store={store}>{children}</Provider>;
+  return (
+    <Provider context={context} store={store}>
+      {children}
+    </Provider>
+  );
 };

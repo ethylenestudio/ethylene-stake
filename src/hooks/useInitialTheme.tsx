@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useStateDispatch } from "store";
 import { setTheme } from "store/slicers/theme";
 
 export const useInitialTheme = () => {
-  const dispatch = useDispatch();
+  const dispatch = useStateDispatch();
 
   useEffect(() => {
     const localStorageTheme = localStorage.getItem("StakeDaoWebsiteTheme");
@@ -18,6 +18,6 @@ export const useInitialTheme = () => {
     }
 
     document.body.classList.add("bg-white");
-    document.body.classList.add("dark:bg-zinc-900");
+    document.body.classList.add("dark:bg-neutral-900");
   }, []);
 };

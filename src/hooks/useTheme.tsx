@@ -1,10 +1,9 @@
-import { useDispatch } from "react-redux";
-import { useTypedStateSelector } from "store";
+import { useStateDispatch, useTypedStateSelector } from "store";
 import { setTheme } from "store/slicers/theme";
 
 export const useTheme = () => {
-  const { theme } = useTypedStateSelector((state: any) => state.theme);
-  const dispatch = useDispatch();
+  const { theme } = useTypedStateSelector((state) => state.theme);
+  const dispatch = useStateDispatch();
 
   const toggleTheme = () => {
     if (Array.from(document.documentElement.classList).includes("dark")) {

@@ -7,7 +7,7 @@ import {
   setSigner,
 } from "../store/reducers/accountReducer";
 import { setIsConnecting } from "../store/reducers/walletConnectionReducer";
-import { useTypedSelector } from "../store";
+import { useEthyleneDispatch, useTypedSelector } from "../store";
 import { EthyleneConnector } from "../types/app";
 import { EthyleneInjectedConnector } from "../utils/connectors";
 import { isProd } from "../utils/isProd";
@@ -25,11 +25,11 @@ export const useConnection = ({
   onMetamaskError?: () => void;
 } = {}) => {
   const { isConnecting, isConnectionFailed, providerName } = useTypedSelector(
-    (state) => state.walletConnection ?? {}
+    (state) => state.walletConnection
   );
 
-  const dispatch = useDispatch();
-  const { auth } = useTypedSelector((state) => state.account ?? {});
+  const dispatch = useEthyleneDispatch();
+  const { auth } = useTypedSelector((state) => state.account);
 
   const connect = async () => {
     if (auth) return;

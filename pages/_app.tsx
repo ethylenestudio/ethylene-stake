@@ -1,7 +1,7 @@
 import "styles/globals.scss";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
-import { stateStoreConext, store } from "store";
+import { stateStoreContext, store } from "store";
 import { useInitialTheme } from "hooks/useInitialTheme";
 import { EthyleneProvider } from "ethylene/utils";
 import { ethyleneStoreConext } from "ethylene/store";
@@ -9,7 +9,7 @@ import { ethyleneStoreConext } from "ethylene/store";
 function StakeDao(props: AppProps) {
   return (
     <EthyleneProvider context={ethyleneStoreConext}>
-      <Provider context={stateStoreConext as any} store={store}>
+      <Provider context={stateStoreContext as any} store={store}>
         <Main {...props} />
       </Provider>
     </EthyleneProvider>

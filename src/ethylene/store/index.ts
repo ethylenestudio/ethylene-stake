@@ -26,10 +26,11 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const ethyleneStoreConext = createContext(null);
-export const useStateDispatch = createDispatchHook(ethyleneStoreConext as any);
+export const useEthyleneDispatch = createDispatchHook(
+  ethyleneStoreConext as any
+);
 export const useStateSelector = createSelectorHook(ethyleneStoreConext as any);
-export const useTypedEthleneSelector: TypedUseSelectorHook<RootState> =
+export const useTypedSelector: TypedUseSelectorHook<RootState> =
   useStateSelector;
