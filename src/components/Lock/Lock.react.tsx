@@ -73,8 +73,8 @@ const LockAuthContent = () => {
       </div>
       <div className="mt-4">
         <LockBalance />
+        <div className="mt-1"></div>
         <Input
-          className="mt-2"
           rightEl={<span>{tab === TabState.LOCK ? "CRV" : "sdCRV"}</span>}
           placeholder="Amount"
           value={value}
