@@ -28,11 +28,14 @@ export const useMinDy = (setMinDy: (to: string) => void) => {
           0,
           value
         );
-        setMinDy(formatValue(formatEther(res)));
+        setMinDy(formatEther(res));
       },
       () => setMinDy("")
     );
   }, 300);
 
-  return { minDyDebounce };
+  return {
+    minDyDebounce,
+    loading: CRV_EXCHANGE_CONTRACT?.methods.get_dy.isLoading,
+  };
 };

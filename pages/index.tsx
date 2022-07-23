@@ -20,7 +20,7 @@ const Home: NextPage = () => {
               The initial CRV is then locked on the native protocol, for the
               maximum duration, and perpetually relocked. This locking allows
               for maximum rewards to be generated which will be the fuel to
-              boost v2 strategies
+              boost v2 strategies.
             </p>
             <Lock />
           </div>

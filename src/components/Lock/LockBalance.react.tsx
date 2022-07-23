@@ -2,7 +2,7 @@ import { TabState } from "components/Lock/Lock.react";
 import { useLockContext } from "components/Lock/LockContext";
 import { SD_CRV_CONTRACT_ADDRESS, CRV_CONTRACT_ADDRESS } from "const/addresses";
 import { formatEther } from "ethers/lib/utils";
-import { useERC20Balance } from "ethylene/hooks";
+import { useAuth, useERC20Balance } from "ethylene/hooks";
 import { _safe } from "ethylene/utils/_safe";
 import { Button, ButtonColor } from "ui/Button/Button.react";
 import { formatBalance } from "utils/formatBalance";
@@ -58,11 +58,12 @@ export const LockBalance = () => {
 
 const useCrvBalance = () => {
   const { fetcher } = useLockContext();
+  const auth = useAuth();
 
   const { balance, fetchBalance } = useERC20Balance({
     address: CRV_CONTRACT_ADDRESS,
     direct: true,
-    deps: [fetcher],
+    deps: [fetcher, auth],
   });
 
   return {
@@ -74,11 +75,12 @@ const useCrvBalance = () => {
 
 const useSDCrvBalance = () => {
   const { fetcher } = useLockContext();
+  const auth = useAuth();
 
   const { balance, fetchBalance } = useERC20Balance({
     address: SD_CRV_CONTRACT_ADDRESS,
     direct: true,
-    deps: [fetcher],
+    deps: [fetcher, auth],
   });
 
   return {

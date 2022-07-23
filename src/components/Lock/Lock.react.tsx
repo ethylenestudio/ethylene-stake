@@ -13,6 +13,7 @@ import { LockBalance } from "components/Lock/LockBalance.react";
 import { useLockFn, useMinDy } from "fn";
 import { BigNumber } from "ethers";
 import { parseEther } from "ethers/lib/utils";
+import { formatValue } from "utils/formatValue";
 
 export enum TabState {
   "EARN",
@@ -58,24 +59,34 @@ const LockAuthContent = () => {
   /**
    * @dev Get output amount
    */
-  const { minDyDebounce } = useMinDy(setMinDy);
+  const { minDyDebounce, loading: dyReqLoading } = useMinDy(setMinDy);
   useEffect(() => {
     if (tab === TabState.EARN) {
       minDyDebounce(getFormattedValue(value));
     }
   }, [value]);
 
-  /**
-   * @dev Lock
-   */
-  const { IAllowance, allowance, IApprove, IDeposit } = useLockFn({
+  const getMinDy = () => {
+    const _minDy = Number(minDy);
+    console.log(_minDy * 1);
+
+    return parseEther(String(_minDy * 0.99));
+  };
+
+  const { IAllowance, IApprove, IDeposit, IExchange, IApproveSd } = useLockFn({
     onDeposit: () => {
+      setFetcher(fetcher + 1);
+      setValue("");
+    },
+    onExchange: () => {
       setFetcher(fetcher + 1);
       setValue("");
     },
     value: getFormattedValue(value),
     isEarning: isEarning,
     isStaking: isStaking,
+    dx: getFormattedValue(value),
+    min_dy: getMinDy(),
   });
 
   useEffect(() => {
@@ -142,19 +153,40 @@ const LockAuthContent = () => {
         {tab === TabState.EARN ? (
           <div className="flex flex-col mt-2">
             <Input
-              value={minDy}
+              rightEl={<span>{"CRV"}</span>}
+              disabled
+              value={formatValue(minDy)}
               onChange={(e) => {
                 setMinDy(e.target.value);
               }}
-              placeholder="Amount"
+              placeholder=""
             />
-            <Button
-              textClassName="text-lg"
-              className="px-2 py-4 mt-6 w-full text-center justify-center"
-              color={theme === "light" ? ButtonColor.black : ButtonColor.white}
-            >
-              Swap
-            </Button>
+            <div className="flex mt-6">
+              <Button
+                loading={IApproveSd.isLoading}
+                disabled={IExchange.isLoading}
+                onClick={IApproveSd.executeAndWait}
+                textClassName="text-lg"
+                className="px-2 py-4 mr-1 w-full text-center justify-center"
+                color={
+                  theme === "light" ? ButtonColor.black : ButtonColor.white
+                }
+              >
+                Approve sdCRV
+              </Button>
+              <Button
+                loading={IExchange.isLoading}
+                disabled={dyReqLoading || IApproveSd.isLoading}
+                onClick={IExchange.executeAndWait}
+                textClassName="text-lg"
+                className="px-2 py-4 ml-1 w-full text-center justify-center"
+                color={
+                  theme === "light" ? ButtonColor.black : ButtonColor.white
+                }
+              >
+                Swap
+              </Button>
+            </div>
           </div>
         ) : (
           <LockView IApprove={IApprove} IDeposit={IDeposit} />

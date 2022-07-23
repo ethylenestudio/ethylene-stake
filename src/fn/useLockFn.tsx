@@ -1,26 +1,33 @@
-import { useLockContext } from "components/Lock/LockContext";
-import { SD_ABI } from "const/abi";
+import { CRV_EXCHANGE_ABI, SD_ABI } from "const/abi";
 import {
   CRV_CONTRACT_ADDRESS,
+  CRV_EXCHANGE_ADDRESS,
   DEPOSITOR_CONTRACT_ADDRESS,
+  SD_CRV_CONTRACT_ADDRESS,
 } from "const/addresses";
 import { BigNumber, constants } from "ethers";
-import { parseEther } from "ethers/lib/utils";
 import { ERC20 } from "ethylene/abi";
 import { useContractFunction } from "ethylene/hooks";
 import { useAddress } from "ethylene/hooks/useAddress";
 import { IContractFunctionInterface } from "ethylene/hooks/useContractFunction";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export const useLockFn = ({
   onDeposit,
+  onExchange,
   value,
+  dx,
+  min_dy,
   isStaking,
   isEarning,
 }: {
   onDeposit: () => void;
+  onExchange: () => void;
   value: BigNumber | null;
   isStaking: boolean;
+  dx: BigNumber | null;
+  min_dy: BigNumber;
   isEarning: boolean;
 }) => {
   const address = useAddress();
@@ -33,8 +40,24 @@ export const useLockFn = ({
     abi: SD_ABI,
     method: "deposit",
     args: [value, isEarning, isStaking, address],
-    onSuccess() {
+    onSuccess: () => {
       onDeposit?.();
+    },
+    onError: () => {
+      toast("Depsit Failed");
+    },
+  });
+
+  const exchange = useContractFunction({
+    address: CRV_EXCHANGE_ADDRESS,
+    abi: CRV_EXCHANGE_ABI,
+    method: "exchange",
+    args: [1, 0, dx, min_dy],
+    onSuccess() {
+      onExchange?.();
+    },
+    onError: () => {
+      toast("Swap Failed");
     },
   });
 
@@ -43,6 +66,16 @@ export const useLockFn = ({
     abi: ERC20,
     method: "approve",
     args: [DEPOSITOR_CONTRACT_ADDRESS, constants.MaxUint256],
+    onSuccess: () => {
+      allowance.execute();
+    },
+  });
+
+  const approveSd = useContractFunction({
+    address: SD_CRV_CONTRACT_ADDRESS,
+    abi: ERC20,
+    method: "approve",
+    args: [CRV_EXCHANGE_ADDRESS, constants.MaxUint256],
     onSuccess: () => {
       allowance.execute();
     },
@@ -58,17 +91,19 @@ export const useLockFn = ({
     },
   });
 
+  const empty: IContractFunctionInterface = {
+    executeAndWait: () => undefined,
+    execute: () => undefined,
+    isLoading: false,
+    isFailed: false,
+  };
+
   return {
-    IDeposit: !value
-      ? ({
-          executeAndWait: () => undefined,
-          execute: () => undefined,
-          isLoading: false,
-          isFailed: false,
-        } as IContractFunctionInterface)
-      : deposit,
+    IDeposit: !value ? empty : deposit,
     IApprove: approve,
+    IApproveSd: approveSd,
     IAllowance: allowance,
+    IExchange: !dx ? empty : exchange,
     allowance: allowanceVal,
     setAllowance: setAllowanceVal,
   };

@@ -34,12 +34,13 @@ const LockView = ({ IApprove, IDeposit }: LockViewProps) => {
       <div className="mt-6 w-full flex">
         <Button
           loading={IApprove.isLoading}
+          disabled={IDeposit.isLoading}
           onClick={() => IApprove.executeAndWait()}
           textClassName="text-lg"
           className="px-2 py-4 mr-1 w-full text-center justify-center"
           color={theme === "light" ? ButtonColor.black : ButtonColor.white}
         >
-          Approve
+          Approve CRV
         </Button>
         <Button
           onClick={IDeposit.executeAndWait}
