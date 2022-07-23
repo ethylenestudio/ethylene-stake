@@ -65,5 +65,17 @@ export const useContractFunction = <T,>({
     execute(true);
   };
 
-  return { isLoading, isFailed, execute, executeAndWait };
+  return {
+    isLoading,
+    isFailed,
+    execute,
+    executeAndWait,
+  } as IContractFunctionInterface;
 };
+
+export interface IContractFunctionInterface {
+  isLoading: boolean;
+  isFailed: boolean;
+  execute: (wait?: boolean) => void;
+  executeAndWait: () => void;
+}

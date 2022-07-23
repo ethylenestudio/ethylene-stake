@@ -33,6 +33,7 @@ export const useContract = <T extends string>({
     });
 
     let mainAbi: any = abi;
+
     mainAbi = mainAbi.filter((item: any) => item.type === "function");
     for (let i = 0; i < mainAbi.length; i++) {
       const key = mainAbi[i].name;

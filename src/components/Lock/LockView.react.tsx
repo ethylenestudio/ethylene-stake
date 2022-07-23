@@ -1,11 +1,15 @@
 import { useLockContext } from "components/Lock/LockContext";
+import { IContractFunctionInterface } from "ethylene/hooks/useContractFunction";
 import { useTheme } from "hooks";
 import { Button, Checkbox } from "ui";
 import { ButtonColor } from "ui/Button/Button.react";
 
-type LockViewProps = Readonly<{}>;
+type LockViewProps = Readonly<{
+  IApprove: IContractFunctionInterface;
+  IDeposit: IContractFunctionInterface;
+}>;
 
-const LockView = ({}: LockViewProps) => {
+const LockView = ({ IApprove, IDeposit }: LockViewProps) => {
   const { theme } = useTheme();
   const { isStaking, setIsStaking, setIsEarning, isEarning } = useLockContext();
 
@@ -29,6 +33,8 @@ const LockView = ({}: LockViewProps) => {
       </div>
       <div className="mt-6 w-full flex">
         <Button
+          loading={IApprove.isLoading}
+          onClick={() => IApprove.executeAndWait()}
           textClassName="text-lg"
           className="px-2 py-4 mr-1 w-full text-center justify-center"
           color={theme === "light" ? ButtonColor.black : ButtonColor.white}
@@ -36,6 +42,9 @@ const LockView = ({}: LockViewProps) => {
           Approve
         </Button>
         <Button
+          onClick={IDeposit.executeAndWait}
+          loading={IDeposit.isLoading}
+          disabled={IApprove.isLoading}
           textClassName="text-lg"
           className="px-2 py-4 ml-1 w-full text-center justify-center"
           color={theme === "light" ? ButtonColor.black : ButtonColor.white}

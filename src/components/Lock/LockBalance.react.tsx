@@ -57,9 +57,12 @@ export const LockBalance = () => {
 };
 
 const useCrvBalance = () => {
+  const { fetcher } = useLockContext();
+
   const { balance, fetchBalance } = useERC20Balance({
     address: CRV_CONTRACT_ADDRESS,
     direct: true,
+    deps: [fetcher],
   });
 
   return {
@@ -70,9 +73,12 @@ const useCrvBalance = () => {
 };
 
 const useSDCrvBalance = () => {
+  const { fetcher } = useLockContext();
+
   const { balance, fetchBalance } = useERC20Balance({
     address: SD_CRV_CONTRACT_ADDRESS,
     direct: true,
+    deps: [fetcher],
   });
 
   return {

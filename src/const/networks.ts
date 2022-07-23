@@ -1,8 +1,8 @@
 import { EthyleneNetwork } from "ethylene/types/app";
 
 export const ETHEREUM_MAINNET_MOCK: EthyleneNetwork = {
-  chainId: "0x7a69",
+  chainId: "0x539",
   name: "Ethereum Mainnet Mock",
-  rpcUrls: ["http://localhost:8545/"],
+  rpcUrls: ["http://127.0.0.1:8545/"],
   nativeCurrency: { name: "Ether", decimals: 18, symbol: "ETH" },
 };

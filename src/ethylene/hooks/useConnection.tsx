@@ -58,7 +58,7 @@ export const useConnection = ({
       });
     } catch {
       dispatch(setIsConnecting(false));
-      const error = new Error("Failed to connect the walled");
+      const error = new Error("Failed to connect the wallet");
       onError?.(error);
       if (!isProd) {
         console.error(error);

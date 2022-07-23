@@ -9,6 +9,7 @@ export const LockContext = React.createContext<{
   value: string;
   setValue: (to: string) => void;
   tab: TabState | string;
+  fetcher: number;
 }>({
   isStaking: false,
   setIsStaking: () => undefined,
@@ -17,6 +18,7 @@ export const LockContext = React.createContext<{
   value: "",
   setValue: () => undefined,
   tab: "LOCK",
+  fetcher: 0,
 });
 
 export const useLockContext = () => {

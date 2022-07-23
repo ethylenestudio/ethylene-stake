@@ -1,6 +1,6 @@
 import { Tab } from "components/Tab/Tab.react";
 import { NUMBER_REGEX } from "const";
-import { useAuth, useERC20Balance } from "ethylene/hooks";
+import { useAuth } from "ethylene/hooks";
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, Input } from "ui";
 import { ButtonColor } from "ui/Button/Button.react";
@@ -8,13 +8,11 @@ import { useTheme } from "hooks";
 import { LockNotAuthPlaceholder } from "components/Lock/LockAuthPlaceholder.react";
 import { LockContext } from "components/Lock/LockContext";
 import { LockView } from "components/Lock/LockView.react";
-import {
-  CRV_DEPOSITOR_CONTRACT_ADDRESS,
-  CRV_TOKEN_ADDRESS,
-} from "const/addresses";
-import { formatBalance } from "utils/formatBalance";
 import { _safe } from "ethylene/utils/_safe";
 import { LockBalance } from "components/Lock/LockBalance.react";
+import { useLockFn, useMinDy } from "fn";
+import { BigNumber } from "ethers";
+import { parseEther } from "ethers/lib/utils";
 
 export enum TabState {
   "EARN",
@@ -33,10 +31,59 @@ const Lock = () => {
 
 const LockAuthContent = () => {
   const { theme } = useTheme();
+  const auth = useAuth();
   const [tab, setTab] = useState<TabState>(TabState.LOCK);
   const [value, setValue] = useState<string>("");
+  const [minDy, setMinDy] = useState<string>("");
   const [isStaking, setIsStaking] = useState(false);
   const [isEarning, setIsEarning] = useState(false);
+  const [fetcher, setFetcher] = useState(0);
+
+  useEffect(() => {
+    setValue("");
+    setMinDy("");
+  }, [tab]);
+
+  const getFormattedValue = (value: string) => {
+    try {
+      if (!value) {
+        return null;
+      }
+      return parseEther(value);
+    } catch {
+      return BigNumber.from(0);
+    }
+  };
+
+  /**
+   * @dev Get output amount
+   */
+  const { minDyDebounce } = useMinDy(setMinDy);
+  useEffect(() => {
+    if (tab === TabState.EARN) {
+      minDyDebounce(getFormattedValue(value));
+    }
+  }, [value]);
+
+  /**
+   * @dev Lock
+   */
+  const { IAllowance, allowance, IApprove, IDeposit } = useLockFn({
+    onDeposit: () => {
+      setFetcher(fetcher + 1);
+      setValue("");
+    },
+    value: getFormattedValue(value),
+    isEarning: isEarning,
+    isStaking: isStaking,
+  });
+
+  useEffect(() => {
+    if (!auth) {
+      return;
+    }
+    IAllowance.execute();
+  }, [auth]);
 
   const contextVal = useMemo(
     () => ({
@@ -47,13 +94,19 @@ const LockAuthContent = () => {
       value,
       setValue,
       tab,
+      fetcher,
     }),
-    [isStaking, isEarning, setIsEarning, setIsStaking, value, setValue, tab]
+    [
+      isStaking,
+      isEarning,
+      setIsEarning,
+      setIsStaking,
+      value,
+      setValue,
+      tab,
+      fetcher,
+    ]
   );
-
-  useEffect(() => {
-    setValue("");
-  }, [tab]);
 
   return (
     <LockContext.Provider value={contextVal}>
@@ -88,7 +141,13 @@ const LockAuthContent = () => {
         />
         {tab === TabState.EARN ? (
           <div className="flex flex-col mt-2">
-            <Input placeholder="Amount" />
+            <Input
+              value={minDy}
+              onChange={(e) => {
+                setMinDy(e.target.value);
+              }}
+              placeholder="Amount"
+            />
             <Button
               textClassName="text-lg"
               className="px-2 py-4 mt-6 w-full text-center justify-center"
@@ -98,7 +157,7 @@ const LockAuthContent = () => {
             </Button>
           </div>
         ) : (
-          <LockView />
+          <LockView IApprove={IApprove} IDeposit={IDeposit} />
         )}
       </div>
     </LockContext.Provider>
