@@ -16,4 +16,17 @@ export const CRV_EXCHANGE_ABI = JSON.parse(
   ifaceCrv.format(FormatTypes.json) as any
 );
 
+const rewardAbiHumanReadable = [
+  "function claimable_reward(address, address) view returns(uint256)",
+  "function reward_tokens(uint256) view returns(address)",
+  "function reward_count() view returns(uint256)",
+  "function claim_rewards()",
+  "function balanceOf(address) view returns(uint256)",
+];
+const ifaceReward = new Interface(rewardAbiHumanReadable);
+
+export const REWARD_ABI = JSON.parse(
+  ifaceReward.format(FormatTypes.json) as any
+);
+
 export type SD_FUNCTIONS = "deposit";

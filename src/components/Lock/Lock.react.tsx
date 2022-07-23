@@ -1,7 +1,7 @@
 import { Tab } from "components/Tab/Tab.react";
 import { NUMBER_REGEX } from "const";
 import { useAuth } from "ethylene/hooks";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Button, Input } from "ui";
 import { ButtonColor } from "ui/Button/Button.react";
 import { useTheme } from "hooks";
@@ -9,11 +9,15 @@ import { LockNotAuthPlaceholder } from "components/Lock/LockAuthPlaceholder.reac
 import { LockContext } from "components/Lock/LockContext";
 import { LockView } from "components/Lock/LockView.react";
 import { _safe } from "ethylene/utils/_safe";
-import { LockBalance } from "components/Lock/LockBalance.react";
+import {
+  LockBalance,
+  useSDCrvBalance,
+} from "components/Lock/LockBalance.react";
 import { useLockFn, useMinDy } from "fn";
 import { BigNumber } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { formatValue } from "utils/formatValue";
+import { GFetcherContext } from "../../../pages/index";
 
 export enum TabState {
   "EARN",
@@ -39,6 +43,7 @@ const LockAuthContent = () => {
   const [isStaking, setIsStaking] = useState(false);
   const [isEarning, setIsEarning] = useState(false);
   const [fetcher, setFetcher] = useState(0);
+  const { gFetcher, setGFetcher } = useContext(GFetcherContext);
 
   useEffect(() => {
     setValue("");
@@ -68,7 +73,6 @@ const LockAuthContent = () => {
 
   const getMinDy = () => {
     const _minDy = Number(minDy);
-    console.log(_minDy * 1);
 
     return parseEther(String(_minDy * 0.99));
   };
@@ -77,6 +81,7 @@ const LockAuthContent = () => {
     onDeposit: () => {
       setFetcher(fetcher + 1);
       setValue("");
+      setGFetcher(gFetcher + 1);
     },
     onExchange: () => {
       setFetcher(fetcher + 1);
@@ -118,6 +123,14 @@ const LockAuthContent = () => {
       fetcher,
     ]
   );
+
+  const { balance: SDCRVBalance } = useSDCrvBalance();
+
+  const isDisabled = (balance: BigNumber) => {
+    if (!value) return true;
+    const _amount = BigNumber.from(parseEther(value));
+    return BigNumber.from(_amount).gt(balance);
+  };
 
   return (
     <LockContext.Provider value={contextVal}>
@@ -176,7 +189,11 @@ const LockAuthContent = () => {
               </Button>
               <Button
                 loading={IExchange.isLoading}
-                disabled={dyReqLoading || IApproveSd.isLoading}
+                disabled={
+                  dyReqLoading ||
+                  IApproveSd.isLoading ||
+                  isDisabled(SDCRVBalance)
+                }
                 onClick={IExchange.executeAndWait}
                 textClassName="text-lg"
                 className="px-2 py-4 ml-1 w-full text-center justify-center"

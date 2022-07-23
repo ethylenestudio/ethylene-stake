@@ -1,17 +1,34 @@
-import { Header, Layout, Lock, Navbar } from "components";
+import { Header, Layout, Lock, Navbar, Rewards } from "components";
 import type { NextPage } from "next";
+import React, { useMemo, useState } from "react";
 import { Container } from "ui";
 
+export const GFetcherContext = React.createContext<{
+  gFetcher: number;
+  setGFetcher: (to: number) => void;
+}>({
+  gFetcher: 0,
+  setGFetcher: () => undefined,
+});
+
 const Home: NextPage = () => {
+  const [gFetcher, setGFetcher] = useState(0);
+
+  const contextValue = useMemo(() => {
+    return {
+      gFetcher,
+      setGFetcher,
+    };
+  }, [gFetcher, setGFetcher]);
+
   return (
-    <>
+    <GFetcherContext.Provider value={contextValue}>
       <Header title="Home" />
       <Navbar />
       <Layout>
         <Container className="pt-10 flex w-full items-start flex-1 flex-col md:flex-row justify-start md:justify-between">
-          <div className="flex sm:w-full md:w-7/12 flex-col mb-12 md:mb-0">
-            <h2 className="text-2xl mb-4">My rewards</h2>
-            <span>You have no reward</span>
+          <div className="flex sm:w-full md:w-7/12 flex-col mb-12 md:mb-0 h-full">
+            <Rewards />
           </div>
           <div className="ml-4 hidden md:block mr-4"></div>
           <div className="flex flex-col w-full md:w-5/12">
@@ -26,7 +43,7 @@ const Home: NextPage = () => {
           </div>
         </Container>
       </Layout>
-    </>
+    </GFetcherContext.Provider>
   );
 };
 

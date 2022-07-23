@@ -44,7 +44,7 @@ export const useLockFn = ({
       onDeposit?.();
     },
     onError: () => {
-      toast("Depsit Failed");
+      toast("Deposit Failed");
     },
   });
 

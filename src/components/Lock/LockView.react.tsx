@@ -1,4 +1,7 @@
+import { useCrvBalance } from "components/Lock/LockBalance.react";
 import { useLockContext } from "components/Lock/LockContext";
+import { BigNumber } from "ethers";
+import { parseEther } from "ethers/lib/utils";
 import { IContractFunctionInterface } from "ethylene/hooks/useContractFunction";
 import { useTheme } from "hooks";
 import { Button, Checkbox } from "ui";
@@ -11,7 +14,16 @@ type LockViewProps = Readonly<{
 
 const LockView = ({ IApprove, IDeposit }: LockViewProps) => {
   const { theme } = useTheme();
-  const { isStaking, setIsStaking, setIsEarning, isEarning } = useLockContext();
+  const { isStaking, setIsStaking, setIsEarning, isEarning, value } =
+    useLockContext();
+
+  const { balance: crvBalance } = useCrvBalance();
+
+  const isDisabled = (balance: BigNumber) => {
+    if (!value) return true;
+    const _amount = BigNumber.from(parseEther(value));
+    return BigNumber.from(_amount).gt(balance);
+  };
 
   return (
     <>
@@ -45,7 +57,7 @@ const LockView = ({ IApprove, IDeposit }: LockViewProps) => {
         <Button
           onClick={IDeposit.executeAndWait}
           loading={IDeposit.isLoading}
-          disabled={IApprove.isLoading}
+          disabled={IApprove.isLoading || isDisabled(crvBalance)}
           textClassName="text-lg"
           className="px-2 py-4 ml-1 w-full text-center justify-center"
           color={theme === "light" ? ButtonColor.black : ButtonColor.white}

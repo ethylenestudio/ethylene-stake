@@ -56,7 +56,7 @@ export const LockBalance = () => {
   );
 };
 
-const useCrvBalance = () => {
+export const useCrvBalance = () => {
   const { fetcher } = useLockContext();
   const auth = useAuth();
 
@@ -73,7 +73,7 @@ const useCrvBalance = () => {
   };
 };
 
-const useSDCrvBalance = () => {
+export const useSDCrvBalance = () => {
   const { fetcher } = useLockContext();
   const auth = useAuth();
 
