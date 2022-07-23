@@ -8,6 +8,7 @@ import {
 } from "ethylene/constants/tokens";
 import {
   useAuth,
+  useConnection,
   useContract,
   useContractFunction,
   useProvider,
@@ -19,7 +20,7 @@ import { Button, Spinner } from "ui";
 import { ButtonColor } from "ui/Button/Button.react";
 import { formatValue } from "utils/formatValue";
 import { GFetcherContext } from "../../../pages/index";
-import styles from "./Rewards.module.scss";
+import MetamaskImage from "assets/metamask.png";
 
 interface RewardTokenMappingInterface {
   [key: string]: BigNumber;
@@ -40,6 +41,7 @@ const Rewards = () => {
     abi: REWARD_ABI,
     provider,
   });
+  const { connect } = useConnection();
 
   const [rewardLength, setRewardLength] = useState<number | null>(null);
   const [rewardTokenMapping, setRewardTokenMapping] =
@@ -117,7 +119,8 @@ const Rewards = () => {
           </div>
 
           <h2 className="text-2xl mb-0 mt-8">My rewards</h2>
-          {rewardContract?.methods.claimable_reward.isLoading ? (
+          {rewardContract?.methods.claimable_reward.isLoading ||
+          rewardContract?.methods.reward_tokens.isLoading ? (
             <div className="flex flex-1 w-full h-full mt-4 ml-auto mr-auto justify-center md:justify-start">
               <Spinner size={36} />
             </div>
@@ -156,6 +159,12 @@ const Rewards = () => {
       ) : (
         <div className="flex flex-1 flex-col w-full h-full items-center justify-center">
           <span>Connect wallet to see your rewards</span>
+          <img
+            onClick={connect}
+            src={MetamaskImage.src}
+            alt="metamask"
+            className="w-6 mt-2 cursor-pointer"
+          />
         </div>
       )}
     </>

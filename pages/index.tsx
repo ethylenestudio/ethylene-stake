@@ -27,7 +27,7 @@ const Home: NextPage = () => {
       <Navbar />
       <Layout>
         <Container className="pt-10 flex w-full items-start flex-1 flex-col md:flex-row justify-start md:justify-between">
-          <div className="flex sm:w-full md:w-7/12 flex-col mb-12 md:mb-0 h-full">
+          <div className="flex w-full md:w-7/12  flex-col mb-12 md:mb-0 h-full">
             <Rewards />
           </div>
           <div className="ml-4 hidden md:block mr-4"></div>
