@@ -43,8 +43,15 @@ export const useLockFn = ({
     onSuccess: () => {
       onDeposit?.();
     },
-    onError: () => {
-      toast("Deposit Failed");
+    onError: (err) => {
+      try {
+        if (err.code === 4001) {
+          return;
+        }
+        toast("Deposit failed. Make sure the CRV tokens to be approved");
+      } catch (err) {
+        toast("Deposit failed");
+      }
     },
   });
 
@@ -56,8 +63,15 @@ export const useLockFn = ({
     onSuccess() {
       onExchange?.();
     },
-    onError: () => {
-      toast("Swap Failed");
+    onError: (err) => {
+      try {
+        if (err.code === 4001) {
+          return;
+        }
+        toast("Swap failed. Make sure the sdCRV tokens to be approved");
+      } catch (err) {
+        toast("Swap failed");
+      }
     },
   });
 

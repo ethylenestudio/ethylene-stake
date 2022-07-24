@@ -22,6 +22,7 @@ const rewardAbiHumanReadable = [
   "function reward_count() view returns(uint256)",
   "function claim_rewards()",
   "function balanceOf(address) view returns(uint256)",
+  "function withdraw(uint256, bool)",
 ];
 const ifaceReward = new Interface(rewardAbiHumanReadable);
 

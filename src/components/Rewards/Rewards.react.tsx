@@ -36,6 +36,7 @@ const Rewards = () => {
     | "reward_tokens"
     | "claim_rewards"
     | "balanceOf"
+    | "withdraw"
   >({
     address: REWARD_CONTRACT_ADDRESS,
     abi: REWARD_ABI,
@@ -111,10 +112,24 @@ const Rewards = () => {
           <div>
             <span className="text-lg">
               {_safe(
-                () => formatValue(formatEther(totalLocked)),
+                () => `${formatValue(formatEther(totalLocked))} sdCRV`,
                 () => 0
               )}
             </span>
+            <Button
+              loading={rewardContract?.methods.withdraw.isLoading}
+              onClick={async () => {
+                await rewardContract?.methods.withdraw.executeAndWait(
+                  totalLocked,
+                  true
+                );
+                setGFetcher(gFetcher + 1);
+              }}
+              className="mt-4"
+              color={ButtonColor.purple}
+            >
+              Withdraw all
+            </Button>
           </div>
 
           <h2 className="text-2xl mb-0 mt-8">My rewards</h2>

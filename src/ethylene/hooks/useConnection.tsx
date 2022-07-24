@@ -56,6 +56,7 @@ export const useConnection = ({
         dispatch(setAuth(true));
         dispatch(setIsConnecting(false));
       });
+      localStorage.setItem("METAMASK_CONNECTION", "true");
     } catch {
       dispatch(setIsConnecting(false));
       const error = new Error("Failed to connect the wallet");

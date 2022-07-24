@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Container, Icon, Modal } from "ui";
 import { ButtonColor } from "ui/Button/Button.react";
 import {
@@ -43,6 +43,13 @@ const Buttons = () => {
 
   const modal = useModal();
 
+  useEffect(() => {
+    const item = localStorage.getItem("METAMASK_CONNECTION");
+    if (item && item === "true") {
+      connect();
+    }
+  }, []);
+
   return (
     <>
       <Modal isOpen={modal.isOpen} close={modal.close}>
@@ -58,6 +65,7 @@ const Buttons = () => {
           <Button
             onClick={() => {
               disconnect();
+              localStorage.setItem("METAMASK_CONNECTION", "false");
               modal.close();
             }}
             className="w-max mt-4"
