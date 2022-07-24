@@ -4,8 +4,10 @@ import { BigNumber } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { IContractFunctionInterface } from "ethylene/hooks/useContractFunction";
 import { useTheme } from "hooks";
-import { Button, Checkbox } from "ui";
+import { BsQuestionCircleFill } from "react-icons/bs";
+import { Button, Checkbox, Icon } from "ui";
 import { ButtonColor } from "ui/Button/Button.react";
+import { Tooltip } from "ui/Tooltip/Tooltip";
 
 type LockViewProps = Readonly<{
   IApprove: IContractFunctionInterface;
@@ -42,6 +44,11 @@ const LockView = ({ IApprove, IDeposit }: LockViewProps) => {
           />
           <span className="ml-2">Earn</span>
         </div>
+        <Tooltip className="ml-2" content="asfafs" placement="top">
+          <Icon size={14}>
+            <BsQuestionCircleFill />
+          </Icon>
+        </Tooltip>
       </div>
       <div className="mt-6 w-full flex">
         <Button
