@@ -34,7 +34,9 @@ const Home: NextPage = () => {
             {isRightNetwork ? (
               <Rewards />
             ) : (
-              <span>Please connect to the right network</span>
+              <span className="text-lg">
+                Please connect to the right network
+              </span>
             )}
           </div>
           <div className="ml-4 hidden md:block mr-4 order-2"></div>

@@ -7,14 +7,14 @@ export const useInitialTheme = () => {
 
   useEffect(() => {
     const localStorageTheme = localStorage.getItem("StakeDaoWebsiteTheme");
-    if (localStorageTheme === "dark") {
-      dispatch(setTheme("dark"));
-      document.documentElement.classList.remove("light");
-      document.documentElement.classList.add("dark");
-    } else {
+    if (localStorageTheme === "light") {
       dispatch(setTheme("light"));
       document.documentElement.classList.remove("dark");
       document.documentElement.classList.add("light");
+    } else {
+      dispatch(setTheme("dark"));
+      document.documentElement.classList.remove("light");
+      document.documentElement.classList.add("dark");
     }
 
     document.body.classList.add("bg-white");
