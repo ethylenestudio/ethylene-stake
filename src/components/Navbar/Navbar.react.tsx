@@ -13,6 +13,7 @@ import { formatAddress } from "utils/formatAddress";
 import BlackLogo from "assets/logo/black.png";
 import WhiteLogo from "assets/logo/white.png";
 import { ETHEREUM_MAINNET_MOCK } from "const/networks";
+import { ETHEREUM_MAINNET } from "ethylene/constants/networks";
 import MetamaskImage from "assets/metamask.png";
 
 const Navbar = (): React.ReactElement => {
@@ -39,7 +40,11 @@ const Buttons = () => {
   const { connect, disconnect } = useConnection();
   const { theme, toggleTheme } = useTheme();
   const { address, auth } = useAccount();
-  const { isRightNetwork, switchTo } = useRightNetwork(ETHEREUM_MAINNET_MOCK);
+  const { isRightNetwork, switchTo } = useRightNetwork(
+    process.env.NEXT_PUBLIC_DEV == "true"
+      ? ETHEREUM_MAINNET_MOCK
+      : ETHEREUM_MAINNET
+  );
 
   const modal = useModal();
 
@@ -48,6 +53,7 @@ const Buttons = () => {
     if (item && item === "true") {
       connect();
     }
+    console.log(process.env.NEXT_PUBLIC_DEV);
   }, []);
 
   return (
