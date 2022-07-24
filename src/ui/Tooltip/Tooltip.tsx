@@ -7,7 +7,7 @@ import styles from "./Tooltip.module.scss";
 interface TooltipProps {
   children: ReactNode;
   placement?: Placement;
-  content: string;
+  content: ReactNode;
   padding?: string;
   className?: string;
 }

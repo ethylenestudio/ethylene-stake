@@ -44,7 +44,20 @@ const LockView = ({ IApprove, IDeposit }: LockViewProps) => {
           />
           <span className="ml-2">Earn</span>
         </div>
-        <Tooltip className="ml-2" content="asfafs" placement="top">
+        <Tooltip
+          className="ml-2"
+          content={
+            <span className="text-inherit">
+              <b>Stake:</b> This option will automatically stake your sdCRV
+              after minting. <br />
+              <b>Earn:</b> This option will send all the funds in deposit
+              contract to CRV contract. <br />
+              <b>None:</b> If none is selected, you will mint sdCRV from CRV in
+              proportion.
+            </span>
+          }
+          placement="top"
+        >
           <Icon size={14}>
             <BsQuestionCircleFill />
           </Icon>
