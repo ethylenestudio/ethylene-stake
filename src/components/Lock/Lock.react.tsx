@@ -141,7 +141,7 @@ const LockAuthContent = () => {
           selected={tab === TabState.LOCK}
           onClick={() => setTab(TabState.LOCK)}
         >
-          <span className="text-inherit">Stake CRV</span>
+          <span className="text-inherit">Mint and Stake sdCRV</span>
         </Tab>
         <Tab
           selected={tab === TabState.EARN}
