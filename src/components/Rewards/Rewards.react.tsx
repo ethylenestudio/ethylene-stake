@@ -51,6 +51,8 @@ const Rewards = () => {
 
   useEffect(() => {
     if (!auth) return;
+    console.log(auth);
+
     const fetch = async () => {
       const res = await rewardContract?.methods.reward_count.execute();
       setRewardLength(Number(res.toString()));

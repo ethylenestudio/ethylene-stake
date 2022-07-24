@@ -1,6 +1,6 @@
 import { Tab } from "components/Tab/Tab.react";
 import { NUMBER_REGEX } from "const";
-import { useAuth } from "ethylene/hooks";
+import { useAuth, useRightNetwork } from "ethylene/hooks";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Button, Input } from "ui";
 import { ButtonColor } from "ui/Button/Button.react";
@@ -18,6 +18,7 @@ import { BigNumber } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { formatValue } from "utils/formatValue";
 import { GFetcherContext } from "../../../pages/index";
+import { getRightNetwork } from "utils/getRightNetwork";
 
 export enum TabState {
   "EARN",
@@ -44,6 +45,7 @@ const LockAuthContent = () => {
   const [isEarning, setIsEarning] = useState(false);
   const [fetcher, setFetcher] = useState(0);
   const { gFetcher, setGFetcher } = useContext(GFetcherContext);
+  const { isRightNetwork } = useRightNetwork(getRightNetwork());
 
   useEffect(() => {
     setValue("");
@@ -95,11 +97,11 @@ const LockAuthContent = () => {
   });
 
   useEffect(() => {
-    if (!auth) {
+    if (!auth || !isRightNetwork) {
       return;
     }
     IAllowance.execute();
-  }, [auth]);
+  }, [auth, isRightNetwork]);
 
   const contextVal = useMemo(
     () => ({

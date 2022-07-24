@@ -1,7 +1,9 @@
 import { Header, Layout, Lock, Navbar, Rewards } from "components";
+import { useRightNetwork } from "ethylene/hooks";
 import type { NextPage } from "next";
 import React, { useMemo, useState } from "react";
 import { Container } from "ui";
+import { getRightNetwork } from "utils/getRightNetwork";
 
 export const GFetcherContext = React.createContext<{
   gFetcher: number;
@@ -13,6 +15,7 @@ export const GFetcherContext = React.createContext<{
 
 const Home: NextPage = () => {
   const [gFetcher, setGFetcher] = useState(0);
+  const { isRightNetwork } = useRightNetwork(getRightNetwork());
 
   const contextValue = useMemo(() => {
     return {
@@ -28,7 +31,11 @@ const Home: NextPage = () => {
       <Layout>
         <Container className="pt-10 flex w-full items-start flex-1 flex-col md:flex-row justify-start md:justify-between">
           <div className="flex w-full md:w-7/12  flex-col mb-12 md:mb-0 h-full order-3 md:order-1 mt-5 md:mt-0">
-            <Rewards />
+            {isRightNetwork ? (
+              <Rewards />
+            ) : (
+              <span>Please connect to the right network</span>
+            )}
           </div>
           <div className="ml-4 hidden md:block mr-4 order-2"></div>
           <div className="flex flex-col w-full md:w-5/12 order-1 md:order-3">
