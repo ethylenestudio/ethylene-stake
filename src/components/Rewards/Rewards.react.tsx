@@ -10,7 +10,6 @@ import {
   useAuth,
   useConnection,
   useContract,
-  useContractFunction,
   useProvider,
 } from "ethylene/hooks";
 import { useAddress } from "ethylene/hooks/useAddress";
@@ -21,6 +20,7 @@ import { ButtonColor } from "ui/Button/Button.react";
 import { formatValue } from "utils/formatValue";
 import { GFetcherContext } from "../../../pages/index";
 import MetamaskImage from "assets/metamask.png";
+import { BsWallet } from "react-icons/bs";
 
 interface RewardTokenMappingInterface {
   [key: string]: BigNumber;
@@ -41,7 +41,6 @@ const Rewards = () => {
     abi: REWARD_ABI,
     provider,
   });
-  const { connect } = useConnection();
 
   const [rewardLength, setRewardLength] = useState<number | null>(null);
   const [rewardTokenMapping, setRewardTokenMapping] =
@@ -159,12 +158,9 @@ const Rewards = () => {
       ) : (
         <div className="flex flex-1 flex-col w-full h-full items-center justify-center">
           <span>Connect wallet to see your rewards</span>
-          <img
-            onClick={connect}
-            src={MetamaskImage.src}
-            alt="metamask"
-            className="w-6 mt-2 cursor-pointer"
-          />
+          <span className="mt-2">
+            <BsWallet />
+          </span>
         </div>
       )}
     </>
