@@ -106,6 +106,24 @@ const Rewards = () => {
   };
   const keys = getObjectKeys();
 
+  const isClaimDisabled = () => {
+    return _safe(
+      () => {
+        return keys.every((item: string) => {
+          return rewardTokenMapping[item].isZero();
+        });
+      },
+      () => true
+    );
+  };
+
+  const isWithdrawDisabled = () => {
+    return _safe(
+      () => totalLocked.isZero(),
+      () => true
+    );
+  };
+
   return (
     <>
       {auth ? (
@@ -119,6 +137,7 @@ const Rewards = () => {
               )}
             </span>
             <Button
+              disabled={isWithdrawDisabled()}
               loading={rewardContract?.methods.withdraw.isLoading}
               onClick={async () => {
                 await rewardContract?.methods.withdraw.executeAndWait(
@@ -144,6 +163,7 @@ const Rewards = () => {
             <div className="flex flex-col w-full justify-between">
               <div className="flex flex-col mt-4">
                 <Button
+                  disabled={isClaimDisabled()}
                   onClick={async () => {
                     await rewardContract?.methods.claim_rewards.executeAndWait();
                     setGFetcher(gFetcher + 1);

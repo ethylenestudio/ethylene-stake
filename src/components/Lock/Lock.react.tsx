@@ -41,7 +41,7 @@ const LockAuthContent = () => {
   const [tab, setTab] = useState<TabState>(TabState.LOCK);
   const [value, setValue] = useState<string>("");
   const [minDy, setMinDy] = useState<string>("");
-  const [isStaking, setIsStaking] = useState(false);
+  const [isStaking, setIsStaking] = useState(true);
   const [isEarning, setIsEarning] = useState(false);
   const [fetcher, setFetcher] = useState(0);
   const { gFetcher, setGFetcher } = useContext(GFetcherContext);
@@ -174,7 +174,7 @@ const LockAuthContent = () => {
               onChange={(e) => {
                 setMinDy(e.target.value);
               }}
-              placeholder=""
+              placeholder="Output"
             />
             <div className="flex mt-6">
               <Button
